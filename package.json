@@ -4,6 +4,7 @@
   "description": "A proxy for customer tracking, to get around adblockers.",
   "main": "server.js",
   "scripts": {
+    "dev": "NODE_ENV=development nodemon server.js",
     "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
     "test": "npm run lint",
     "docker-build": "docker build -t quay.io/opsee/analytics:latest .",
