@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "config": "^1.19.0",
+    "intercom-client": "^2.6.0",
     "restify": "^4.0.3",
     "winston": "^2.1.1"
   }
