@@ -21,6 +21,8 @@
     "eslint": "^1.10.3"
   },
   "dependencies": {
+    "config": "^1.19.0",
+    "restify": "^4.0.3",
     "winston": "^2.1.1"
   }
 }
