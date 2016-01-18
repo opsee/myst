@@ -4,16 +4,29 @@
   "description": "A proxy for customer tracking, to get around adblockers.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
+    "test": "npm run lint",
+    "docker-build": "docker build -t quay.io/opsee/analytics:latest .",
+    "docker-push": "docker push quay.io/opsee/analytics:latest",
+    "docker-publish": "npm run docker-build && npm run docker-push",
+    "docker-run": "docker run -p 9098:9098 quay.io/opsee/analytics"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/opsee/analytics.git"
   },
-  "author": "@doeg",
+  "author": "Opsee",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/opsee/analytics/issues"
   },
-  "homepage": "https://github.com/opsee/analytics#readme"
+  "homepage": "https://github.com/opsee/analytics#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3"
+  },
+  "dependencies": {
+    "config": "^1.19.0",
+    "restify": "^4.0.3",
+    "winston": "^2.1.1"
+  }
 }
