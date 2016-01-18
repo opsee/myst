@@ -1,5 +1,3 @@
-'use strict';
-
 const config  = require('config');
 const logger  = require('./utils/logger');
 const restify = require('restify');
