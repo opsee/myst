@@ -7,6 +7,7 @@ const server = restify.createServer({
 });
 
 server.get('/health', (req, res, next) => {
+  logger.info('ping');
   res.send(200);
   next();
 });
