@@ -4,8 +4,12 @@
   "description": "A proxy for customer tracking, to get around adblockers.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js"
+    "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
+    "test": "npm run lint",
+    "docker-build": "docker build -t quay.io/opsee/analytics:latest .",
+    "docker-push": "docker push quay.io/opsee/analytics:latest",
+    "docker-publish": "npm run docker-build && npm run docker-push",
+    "docker-run": "docker run -p 9098:9098 quay.io/opsee/analytics"
   },
   "repository": {
     "type": "git",
