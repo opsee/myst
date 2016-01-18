@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/opsee/analytics.git"
   },
-  "author": "@doeg",
+  "author": "Opsee",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/opsee/analytics/issues"
@@ -19,5 +19,8 @@
   "homepage": "https://github.com/opsee/analytics#readme",
   "devDependencies": {
     "eslint": "^1.10.3"
+  },
+  "dependencies": {
+    "winston": "^2.1.1"
   }
 }
