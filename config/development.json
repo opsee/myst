@@ -1,5 +1,9 @@
 {
   "intercom": {
     "app_id": "r801piw5"
+  },
+
+  "google_analytics": {
+    "account_id": "UA-59205908-3"
   }
 }
