@@ -137,6 +137,7 @@
         "beforeColon": false,
         "afterColon": true
     }],
+    "no-console": 1,
     "no-multiple-empty-lines": [1, { // http://eslint.org/docs/rules/no-multiple-empty-lines
       "max": 1
     }],

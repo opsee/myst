@@ -29,7 +29,6 @@ module.exports = {
       googleAnalytics.track(category, action, user, data),
 
       (intercomResponse) => {
-        console.log('intercom request:', intercomResponse.body);
         return intercomResponse.body;
       }
     );
