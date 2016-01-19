@@ -32,5 +32,9 @@ module.exports = {
         return intercomResponse.body;
       }
     );
+  },
+
+  pageview(path, name, user) {
+    return googleAnalytics.pageview(path, name, user);
   }
 };
