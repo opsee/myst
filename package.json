@@ -26,6 +26,7 @@
     "eslint": "^1.10.3"
   },
   "dependencies": {
+    "bluebird": "^3.1.1",
     "config": "^1.19.0",
     "intercom-client": "^2.6.0",
     "restify": "^4.0.3",
