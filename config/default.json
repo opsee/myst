@@ -1,5 +1,9 @@
 {
   "server": {
     "port": 9098
+  },
+
+  "intercom": {
+    "app_id": null
   }
 }
