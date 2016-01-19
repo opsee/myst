@@ -7,6 +7,7 @@ const server = restify.createServer({
   name: 'analytics'
 });
 
+server.use(restify.CORS());
 server.use(restify.bodyParser({ mapParams: true }));
 
 /**
