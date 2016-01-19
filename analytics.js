@@ -23,13 +23,13 @@ function trackIntercom(category, action, user, data) {
 module.exports = {
 
   event(category, action, user, data) {
-
     return Promise.join(
       trackIntercom(category, action, user, data),
 
       (intercomResponse) => {
         console.log('intercom request:', intercomResponse.body);
         return intercomResponse.body;
-    });
+      }
+    );
   }
 };
