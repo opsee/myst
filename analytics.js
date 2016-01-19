@@ -1,3 +1,4 @@
+const googleAnalytics = require('./lib/google-analytics');
 const intercom = require('./lib/intercom');
 const Promise = require('bluebird');
 
@@ -25,6 +26,7 @@ module.exports = {
   event(category, action, user, data) {
     return Promise.join(
       trackIntercom(category, action, user, data),
+      googleAnalytics.track(category, action, user, data),
 
       (intercomResponse) => {
         console.log('intercom request:', intercomResponse.body);
