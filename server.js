@@ -21,21 +21,31 @@ server.use(restify.bodyParser({ mapParams: true }));
  *    This could also be thought of as a step in a funnel;
  *    e.g., 'logout', 'check-created', 'menu-clicked'
  *
+ * @param {object} user - an object specifying one or more attributes for the
+ *    user triggering the event.
+ *
  * @param {object} data - any additional JSON data to be tracked along with
  *    the event
  */
 server.post('event', (req, res, next) => {
-  analytics.event()
-    .then(res => {
-      logger.info(res);
+  const category = req.params.category;
+  const action = req.params.action;
+  const user = req.params.user;
+  const data = req.params.data;
+
+  analytics.event(category, action, user, data)
+    .then(resp => {
+      res.send(resp);
       next();
     }).catch(err => {
       logger.error(err);
+      res.send(err);
       next();
     });
 });
 
 /*
+ * GET /health
  * Opsee/AWS health check endpoint
  */
 server.get('/health', (req, res, next) => {
