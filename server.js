@@ -77,6 +77,29 @@ server.post('pageview', (req, res, next) => {
     });
 });
 
+/**
+ * POST /user
+ *
+ * @param {object} user
+ */
+server.post('user', (req, res, next) => {
+  const user = req.params.user;
+
+  logger.info('/POST user', user);
+
+  analytics
+    .updateUser(user)
+    .then(resp => {
+      res.send(resp);
+      next();
+    })
+    .catch(err => {
+      logger.error(err);
+      res.send(err);
+      next();
+    });
+});
+
 /*
  * GET /health
  * Opsee/AWS health check endpoint
