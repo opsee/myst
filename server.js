@@ -81,6 +81,8 @@ server.post('pageview', (req, res, next) => {
  * POST /user
  *
  * @param {object} user
+ * @param {string} user.id (required)
+ * @param {object} user.custom_attributes (optional)
  */
 server.post('user', (req, res, next) => {
   const user = req.params.user;
