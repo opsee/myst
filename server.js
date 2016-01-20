@@ -37,6 +37,8 @@ server.post('event', (req, res, next) => {
   const user = req.params.user;
   const data = req.params.data;
 
+  logger.info('/POST event', category, action, user, data);
+
   analytics
     .event(category, action, user, data)
     .then(resp => {
@@ -56,8 +58,14 @@ server.post('event', (req, res, next) => {
  * @param {String} name
  */
 server.post('pageview', (req, res, next) => {
+  const path = req.params.path;
+  const name = req.params.name;
+  const user = req.params.user;
+
+  logger.info('/POST pageview', path, name, user);
+
   analytics
-    .pageview(req.params.path, req.params.name, req.params.user)
+    .pageview(path, name, user)
     .then(resp => {
       res.send(resp);
       next();
