@@ -36,11 +36,32 @@ server.post('event', (req, res, next) => {
   const user = req.params.user;
   const data = req.params.data;
 
-  analytics.event(category, action, user, data)
+  analytics
+    .event(category, action, user, data)
     .then(resp => {
       res.send(resp);
       next();
     }).catch(err => {
+      logger.error(err);
+      res.send(err);
+      next();
+    });
+});
+
+/**
+ * POST /pageview
+ *
+ * @param {String} path
+ * @param {String} name
+ */
+server.post('pageview', (req, res, next) => {
+  analytics
+    .pageview(req.params.path, req.params.name, req.params.user)
+    .then(resp => {
+      res.send(resp);
+      next();
+    })
+    .catch(err => {
       logger.error(err);
       res.send(err);
       next();
