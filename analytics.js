@@ -39,6 +39,11 @@ module.exports = {
   },
 
   updateUser(user) {
-    return intercom.users.create(user);
+    return intercom.users.create({
+      email: user.email,
+      id: user.id,
+      name: user.name,
+      custom_attributes: user.custom_attributes
+    });
   }
 };
