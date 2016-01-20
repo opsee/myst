@@ -36,5 +36,14 @@ module.exports = {
 
   pageview(path, name, user) {
     return googleAnalytics.pageview(path, name, user);
+  },
+
+  updateUser(user) {
+    return intercom.users.create({
+      email: user.email,
+      id: user.id,
+      name: user.name,
+      custom_attributes: user.custom_attributes
+    });
   }
 };
