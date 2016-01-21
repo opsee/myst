@@ -10,6 +10,10 @@ COPY package.json /usr/src/app/
 RUN npm install
 COPY . /usr/src/app
 
+ENV APPENV="mystenv"
+ENV INTERCOM_API_KEY=""
+
+
 # Start the server
 EXPOSE 9098
 ENTRYPOINT ["node", "server.js"]
