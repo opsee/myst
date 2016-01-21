@@ -4,7 +4,7 @@ const logger = require('./utils/logger');
 const restify = require('restify');
 
 const server = restify.createServer({
-  name: 'analytics'
+  name: 'myst'
 });
 
 server.use(restify.CORS());
