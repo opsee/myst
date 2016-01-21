@@ -1,5 +1,7 @@
+![myst](http://static.giantbomb.com/uploads/original/8/81005/2350184-main_myst.jpg)
+
 # myst
-[![Circle CI](https://circleci.com/gh/opsee/myst.svg?style=shield&circle-token=6d1df2c870a7f1660f7a1b8eb7baf5a617276bd7)](https://circleci.com/gh/opsee/myst) [![Docker Repository on Quay](https://quay.io/repository/opsee/myst/status?token=e8e181d9-318c-4e39-9842-47416b6e417a "Docker Repository on Quay")](https://quay.io/repository/opsee/myst)
+[![Circle CI](https://circleci.com/gh/opsee/myst.svg?style=shield&circle-token=6d1df2c870a7f1660f7a1b8eb7baf5a617276bd7)](https://circleci.com/gh/opsee/myst) [![Docker Repository on Quay](https://quay.io/repository/opsee/myst/status?token=a7125fae-9c0f-489c-86c5-69418d8efe71 "Docker Repository on Quay")](https://quay.io/repository/opsee/myst)
 
 An API for muxing analytics data. Broadcasts events, user updates, page views, and the like to multiple channels: Google Analytics, Intercom, and Launch Darkly.
 
