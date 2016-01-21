@@ -3,6 +3,8 @@ FROM node:argon
 MAINTAINER Sara Bee <sara@opsee.co>
 
 ENV NODE_ENV 'production'
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y musl-dev
 
 RUN mkdir -p /opt/bin && curl -Lo /opt/bin/s3kms https://s3-us-west-2.amazonaws.com/opsee-releases/go/vinz-clortho/s3kms-linux-amd64 && \
     chmod 755 /opt/bin/s3kms
