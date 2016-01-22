@@ -42,6 +42,58 @@ describe('server', () => {
     });
   });
 
+  describe('POST /event', () => {
+    it('returns 200', (done) => {
+      request
+        .post('/event')
+        .send({
+          category: 'test',
+          user: { id: 123 }
+        })
+        .expect(200, '', done);
+    });
+
+    it('returns error if user missing', (done) => {
+      request
+        .post('/event')
+        .send({
+          category: 'test',
+        })
+        .expect(409, {
+          code: 'InvalidArgument',
+          message: 'Missing user.id parameter'
+        })
+        .end(done);
+    });
+
+    it('returns error if user.id missing', (done) => {
+      request
+        .post('/event')
+        .send({
+          category: 'test',
+          user: { email: 'foo@bar.com' }
+        })
+        .expect(409, {
+          code: 'InvalidArgument',
+          message: 'Missing user.id parameter'
+        })
+        .end(done);
+    });
+
+    it('returns error if category missing', (done) => {
+      request
+        .post('/event')
+        .send({
+          user: { id: 123 }
+        })
+        .expect(409, {
+          code: 'InvalidArgument',
+          message: 'Missing category parameter'
+        })
+        .end(done);
+    });
+  });
+
   describe('POST /pageview', () => {
     it('returns 200', (done) => {
       request

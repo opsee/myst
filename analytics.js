@@ -7,11 +7,7 @@ module.exports = {
   event(category, action, user, data) {
     return Promise.join(
       intercom.track(category, action, user, data),
-      googleAnalytics.track(category, action, user, data),
-
-      (intercomResponse) => {
-        return intercomResponse.body;
-      }
+      googleAnalytics.track(category, action, user, data)
     );
   },
 

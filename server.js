@@ -39,6 +39,14 @@ server.post('event', (req, res, next) => {
 
   logger.info('/POST event', category, action, user, data);
 
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+  }
+
+  if (!category || typeof category !== 'string') {
+    return next(new restify.InvalidArgumentError('Missing category parameter'));
+  }
+
   analytics
     .event(category, action, user, data)
     .then(() =>  {
