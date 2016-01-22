@@ -41,7 +41,7 @@ server.post('event', (req, res, next) => {
 
   analytics
     .event(category, action, user, data)
-    .then(resp =>  {
+    .then(() =>  {
       res.send(200);
       return next();
     })
@@ -80,7 +80,7 @@ server.post('pageview', (req, res, next) => {
 
   analytics
     .pageview(path, name, user)
-    .then(resp => {
+    .then(() => {
       res.send(200);
       return next();
     })
@@ -108,7 +108,7 @@ server.post('user', (req, res, next) => {
 
   analytics
     .updateUser(user)
-    .then(resp => {
+    .then(() => {
       res.send(200);
       return next();
     })
