@@ -41,39 +41,52 @@ server.post('event', (req, res, next) => {
 
   analytics
     .event(category, action, user, data)
-    .then(resp => {
-      res.send(resp);
-      next();
-    }).catch(err => {
+    .then(() =>  {
+      res.send(200);
+      return next();
+    })
+    .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
 /**
  * POST /pageview
  *
- * @param {String} path
- * @param {String} name
+ * @param {String} path - e.g., '/', '/search?q=foo'
+ * @param {String} name - e.g., document.title string
+ * @param {object} user - required
+ * @param {string} user.id - required; used as cid in Google analytics
  */
 server.post('pageview', (req, res, next) => {
   const path = req.params.path;
   const name = req.params.name;
   const user = req.params.user;
 
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+  }
+
+  if (!path || typeof path !== 'string') {
+    return next(new restify.InvalidArgumentError('Missing path parameter'));
+  }
+
+  if (!name || typeof name !== 'string') {
+    return next(new restify.InvalidArgumentError('Missing name parameter'));
+  }
+
   logger.info('/POST pageview', path, name, user);
 
   analytics
     .pageview(path, name, user)
-    .then(resp => {
-      res.send(resp);
-      next();
+    .then(() => {
+      res.send(200);
+      return next();
     })
     .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
@@ -81,24 +94,27 @@ server.post('pageview', (req, res, next) => {
  * POST /user
  *
  * @param {object} user
- * @param {string} user.id (required)
- * @param {object} user.custom_attributes (optional)
+ * @param {string} user.id - required
+ * @param {object} user.custom_attributes - optional
  */
 server.post('user', (req, res, next) => {
   const user = req.params.user;
+
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+  }
 
   logger.info('/POST user', user);
 
   analytics
     .updateUser(user)
-    .then(resp => {
-      res.send(resp);
-      next();
+    .then(() => {
+      res.send(200);
+      return next();
     })
     .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
