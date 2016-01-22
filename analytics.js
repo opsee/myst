@@ -39,9 +39,10 @@ module.exports = {
   },
 
   updateUser(user) {
+    // FIXME don't overwrite intercom data as empty if any parameters undefined
     return intercom.users.create({
       email: user.email,
-      id: user.id,
+      user_id: user.id,
       name: user.name,
       custom_attributes: user.custom_attributes
     });
