@@ -4,5 +4,5 @@
 echo "done"
 source /$APPENV
 echo "donedone"
-node server.js
+npm start
 

@@ -2,9 +2,10 @@
   "name": "opsee-myst",
   "version": "0.0.0",
   "description": "A proxy for customer tracking, to get around adblockers.",
-  "main": "server.js",
+  "main": "start-server.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "node start-server.js",
+    "dev": "NODE_ENV=development nodemon start-server.js",
     "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
     "test": "npm run lint",
     "docker-build": "docker build -t quay.io/opsee/myst:latest .",
