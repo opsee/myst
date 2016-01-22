@@ -6,7 +6,8 @@
   },
 
   "intercom": {
-    "app_id": null
+    "app_id": "somefakeappid",
+    "app_api_key": "somefakeapikey"
   },
 
   "google_analytics": {
