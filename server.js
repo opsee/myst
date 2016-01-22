@@ -41,8 +41,8 @@ server.post('event', (req, res, next) => {
 
   analytics
     .event(category, action, user, data)
-    .then(resp => {
-      res.send(resp);
+    .then(resp =>  {
+      res.send(200);
       return next();
     })
     .catch(err => {
@@ -64,12 +64,24 @@ server.post('pageview', (req, res, next) => {
   const name = req.params.name;
   const user = req.params.user;
 
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+  }
+
+  if (!path || typeof path !== 'string') {
+    return next(new restify.InvalidArgumentError('Missing path parameter'));
+  }
+
+  if (!name || typeof name !== 'string') {
+    return next(new restify.InvalidArgumentError('Missing name parameter'));
+  }
+
   logger.info('/POST pageview', path, name, user);
 
   analytics
     .pageview(path, name, user)
     .then(resp => {
-      res.send(resp);
+      res.send(200);
       return next();
     })
     .catch(err => {
@@ -88,12 +100,16 @@ server.post('pageview', (req, res, next) => {
 server.post('user', (req, res, next) => {
   const user = req.params.user;
 
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+  }
+
   logger.info('/POST user', user);
 
   analytics
     .updateUser(user)
     .then(resp => {
-      res.send(resp);
+      res.send(200);
       return next();
     })
     .catch(err => {
