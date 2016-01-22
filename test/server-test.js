@@ -106,6 +106,27 @@ describe('server', () => {
         .expect(200, '', done);
     });
 
+    it('returns success if user missing', (done) => {
+      request
+        .post('/pageview')
+        .send({
+          path: '/test',
+          name: 'testing',
+        })
+        .expect(200, '', done);
+    });
+
+    it('returns success if user.id missing', (done) => {
+      request
+        .post('/pageview')
+        .send({
+          path: '/test',
+          name: 'testing',
+          user: { email: 'foo@bar.com' }
+        })
+        .expect(200, '', done);
+    });
+
     it('returns error if path missing', (done) => {
       request
         .post('/pageview')
@@ -130,35 +151,6 @@ describe('server', () => {
         .expect(409, {
           code: 'InvalidArgument',
           message: 'Missing name parameter'
-        })
-        .end(done);
-    });
-
-    it('returns error if user missing', (done) => {
-      request
-        .post('/pageview')
-        .send({
-          path: '/test',
-          name: 'testing',
-        })
-        .expect(409, {
-          code: 'InvalidArgument',
-          message: 'Missing user.id parameter'
-        })
-        .end(done);
-    });
-
-    it('returns error if user.id missing', (done) => {
-      request
-        .post('/pageview')
-        .send({
-          path: '/test',
-          name: 'testing',
-          user: { email: 'foo@bar.com' }
-        })
-        .expect(409, {
-          code: 'InvalidArgument',
-          message: 'Missing user.id parameter'
         })
         .end(done);
     });
