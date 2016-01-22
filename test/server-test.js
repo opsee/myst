@@ -2,15 +2,30 @@
 
 const config = require('config');
 const supertest = require('supertest');
-const server = require('../server');
 const assert = require('chai').assert;
 const URL = require('url');
+const sinon = require('sinon');
+
+const googleAnalytics = require('../lib/google-analytics');
+const intercom = require('../lib/intercom');
+const server = require('../server');
+
+function noop() {
+  return Promise.resolve();
+}
 
 describe('server', () => {
-
   let request;
 
   before(() => {
+    // Stub out to avoid network requests
+    // FIXME it is lame to do this one-by-one ??? (also: I would rather mock
+    // the npm libs themselves as opposed to the Myst libs)
+    sinon.stub(googleAnalytics, 'pageview',  noop);
+    sinon.stub(googleAnalytics, 'track', noop);
+    sinon.stub(intercom, 'updateUser',  noop);
+    sinon.stub(intercom, 'track', noop);
+
     request = supertest(URL.format({
       protocol: config.server.protocol,
       hostname: config.server.hostname,

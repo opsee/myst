@@ -6,10 +6,10 @@
   },
 
   "intercom": {
-    "app_id": "r801piw5"
+    "app_id": null
   },
 
   "google_analytics": {
-    "account_id": "UA-59205908-3"
+    "account_id": null
   }
 }
