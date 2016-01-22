@@ -25,7 +25,7 @@ server.use(restify.bodyParser({ mapParams: true }));
  * @param {object} user - an object specifying one or more attributes for the
  *    user triggering the event.
  *
- * @param {String} user.email - (required) the email address for the user's account.
+ * @param {String} user.id - (required) the opsee ID of the user's account.
  *    This is used to identify them in intercom.io.
  *
  * @param {object} data - any additional JSON data to be tracked along with
@@ -47,7 +47,8 @@ server.post('event', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
@@ -86,7 +87,8 @@ server.post('pageview', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
@@ -116,7 +118,8 @@ server.post('user', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
