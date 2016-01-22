@@ -43,19 +43,21 @@ server.post('event', (req, res, next) => {
     .event(category, action, user, data)
     .then(resp => {
       res.send(resp);
-      next();
-    }).catch(err => {
+      return next();
+    })
+    .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
 /**
  * POST /pageview
  *
- * @param {String} path
- * @param {String} name
+ * @param {String} path - e.g., '/', '/search?q=foo'
+ * @param {String} name - e.g., document.title string
+ * @param {object} user - required
+ * @param {string} user.id - required; used as cid in Google analytics
  */
 server.post('pageview', (req, res, next) => {
   const path = req.params.path;
@@ -68,12 +70,11 @@ server.post('pageview', (req, res, next) => {
     .pageview(path, name, user)
     .then(resp => {
       res.send(resp);
-      next();
+      return next();
     })
     .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
@@ -81,8 +82,8 @@ server.post('pageview', (req, res, next) => {
  * POST /user
  *
  * @param {object} user
- * @param {string} user.id (required)
- * @param {object} user.custom_attributes (optional)
+ * @param {string} user.id - required
+ * @param {object} user.custom_attributes - optional
  */
 server.post('user', (req, res, next) => {
   const user = req.params.user;
@@ -93,12 +94,11 @@ server.post('user', (req, res, next) => {
     .updateUser(user)
     .then(resp => {
       res.send(resp);
-      next();
+      return next();
     })
     .catch(err => {
       logger.error(err);
-      res.send(err);
-      next();
+      return next(err);
     });
 });
 
