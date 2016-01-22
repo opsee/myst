@@ -47,7 +47,8 @@ server.post('event', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
@@ -86,7 +87,8 @@ server.post('pageview', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
@@ -116,7 +118,8 @@ server.post('user', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
-      return next(err);
+      res.send(500);
+      return next();
     });
 });
 
