@@ -95,6 +95,8 @@ server.post('pageview', (req, res, next) => {
  *
  * @param {object} user
  * @param {string} user.id - required
+ * @param {string} user.email - optional
+ * @param {string} user.name - optional
  * @param {object} user.custom_attributes - optional
  */
 server.post('user', (req, res, next) => {
@@ -127,6 +129,12 @@ server.get('/health', (req, res, next) => {
   next();
 });
 
-server.listen(config.server.port, () => {
-  logger.info(`${process.env.NODE_ENV} server ${server.name} listening at ${server.url}`);
-});
+module.exports = {
+  server: server,
+
+  start() {
+    server.listen(config.server.port, () => {
+      logger.info(`${process.env.NODE_ENV} server ${server.name} listening at ${server.url}`);
+    });
+  }
+};

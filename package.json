@@ -2,11 +2,13 @@
   "name": "opsee-myst",
   "version": "0.0.0",
   "description": "A proxy for customer tracking, to get around adblockers.",
-  "main": "server.js",
+  "main": "start-server.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "node start-server.js",
+    "dev": "NODE_ENV=development nodemon start-server.js",
     "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
-    "test": "npm run lint",
+    "mocha": "NODE_ENV=test mocha test",
+    "test": "npm run mocha && npm run lint",
     "docker-build": "docker build -t quay.io/opsee/myst:latest .",
     "docker-push": "docker push quay.io/opsee/myst:latest",
     "docker-publish": "npm run docker-build && npm run docker-push",
@@ -23,10 +25,15 @@
   },
   "homepage": "https://github.com/opsee/myst#readme",
   "devDependencies": {
-    "eslint": "^1.10.3"
+    "chai": "^3.4.1",
+    "eslint": "^1.10.3",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "supertest": "^1.1.0"
   },
   "dependencies": {
     "bluebird": "^3.1.1",
+    "chai": "^3.4.1",
     "config": "^1.19.0",
     "intercom-client": "^2.6.0",
     "restify": "^4.0.3",

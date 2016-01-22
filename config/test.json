@@ -1,0 +1,16 @@
+{
+  "server": {
+    "protocol": "http",
+    "hostname": "localhost",
+    "port": 9099
+  },
+
+  "intercom": {
+    "app_id": "somefakeappid",
+    "app_api_key": "somefakeapikey"
+  },
+
+  "google_analytics": {
+    "account_id": null
+  }
+}
