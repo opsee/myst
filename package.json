@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon start-server.js",
     "lint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 *.js",
     "mocha": "mocha test",
-    "test": "npm run mocha && npm run lint",
+    "test": "NODE_ENV=test npm run mocha && npm run lint",
     "docker-build": "docker build -t quay.io/opsee/myst:latest .",
     "docker-push": "docker push quay.io/opsee/myst:latest",
     "docker-publish": "npm run docker-build && npm run docker-push",

@@ -1,15 +1,27 @@
-const request = require('supertest');
+'use strict';
+
+const config = require('config');
+const supertest = require('supertest');
 const server = require('../server');
 const assert = require('chai').assert;
+const URL = require('url');
 
 describe('server', () => {
+
+  let request;
+
   before(() => {
+    request = supertest(URL.format({
+      protocol: config.server.protocol,
+      hostname: config.server.hostname,
+      port: config.server.port
+    }));
     server.start();
   });
 
   describe('POST /health', () => {
     it('returns 200', (done) => {
-      request('http://localhost:9098')
+      request
         .get('/health')
         .expect(200, '', done);
     });
@@ -17,7 +29,7 @@ describe('server', () => {
 
   describe('POST /pageview', () => {
     it('returns 200', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/pageview')
         .send({
           path: '/test',
@@ -28,7 +40,7 @@ describe('server', () => {
     });
 
     it('returns error if path missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/pageview')
         .send({
           name: 'testing',
@@ -42,7 +54,7 @@ describe('server', () => {
     });
 
     it('returns error if name missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/pageview')
         .send({
           path: '/test',
@@ -56,7 +68,7 @@ describe('server', () => {
     });
 
     it('returns error if user missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/pageview')
         .send({
           path: '/test',
@@ -70,7 +82,7 @@ describe('server', () => {
     });
 
     it('returns error if user.id missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/pageview')
         .send({
           path: '/test',
@@ -87,7 +99,7 @@ describe('server', () => {
 
   describe('POST /user', () => {
     it('returns 200', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/user')
         .send({
           user: { id: 123 }
@@ -96,7 +108,7 @@ describe('server', () => {
     });
 
     it('returns error if user missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/user')
         .send({})
         .expect(409, {
@@ -107,7 +119,7 @@ describe('server', () => {
     });
 
     it('returns error if user.id missing', (done) => {
-      request('http://localhost:9098')
+      request
         .post('/user')
         .send({
           user: { email: 'foo@bar.com' }
