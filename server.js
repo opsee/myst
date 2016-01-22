@@ -65,17 +65,13 @@ server.post('event', (req, res, next) => {
  *
  * @param {String} path - e.g., '/', '/search?q=foo'
  * @param {String} name - e.g., document.title string
- * @param {object} user - required
- * @param {string} user.id - required; used as cid in Google analytics
+ * @param {object} user - optional
+ * @param {string} user.id - optional; used as cid in Google analytics
  */
 server.post('pageview', (req, res, next) => {
   const path = req.params.path;
   const name = req.params.name;
   const user = req.params.user;
-
-  if (!user || !user.id) {
-    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
-  }
 
   if (!path || typeof path !== 'string') {
     return next(new restify.InvalidArgumentError('Missing path parameter'));
