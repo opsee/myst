@@ -1,6 +1,5 @@
 const googleAnalytics = require('./lib/google-analytics');
 const intercom = require('./lib/intercom');
-const logger = require('./utils/logger');
 const Promise = require('bluebird');
 
 module.exports = {

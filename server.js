@@ -10,6 +10,11 @@ const server = restify.createServer({
 server.use(restify.CORS());
 server.use(restify.bodyParser({ mapParams: true }));
 
+server.use((req, res, next) => {
+  logger.info(req.method, req.url, req.params);
+  next();
+});
+
 /**
  * POST /event
  * Generic event tracking, sent to both Google Analytics and Intercom. The
@@ -36,8 +41,6 @@ server.post('event', (req, res, next) => {
   const action = req.params.action;
   const user = req.params.user;
   const data = req.params.data;
-
-  logger.info('/POST event', category, action, user, data);
 
   if (!user || !user.id) {
     return next(new restify.InvalidArgumentError('Missing user.id parameter'));
@@ -82,8 +85,6 @@ server.post('pageview', (req, res, next) => {
     return next(new restify.InvalidArgumentError('Missing name parameter'));
   }
 
-  logger.info('/POST pageview', path, name, user);
-
   analytics
     .pageview(path, name, user)
     .then(() => {
@@ -112,8 +113,6 @@ server.post('user', (req, res, next) => {
   if (!user || !user.id) {
     return next(new restify.InvalidArgumentError('Missing user.id parameter'));
   }
-
-  logger.info('/POST user', user);
 
   analytics
     .updateUser(user)
