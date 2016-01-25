@@ -67,6 +67,7 @@ server.post('event', (req, res, next) => {
  * @param {String} name - e.g., document.title string
  * @param {object} user - optional
  * @param {string} user.id - optional; used as cid in Google analytics
+ * @param {string} user.uuid - optional; an anonymous UUID
  */
 server.post('pageview', (req, res, next) => {
   const path = req.params.path;
