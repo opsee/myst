@@ -10,6 +10,11 @@ const server = restify.createServer({
 server.use(restify.CORS());
 server.use(restify.bodyParser({ mapParams: true }));
 
+server.use((req, res, next) => {
+  logger.info(req.method, req.url, req.params);
+  next();
+});
+
 /**
  * POST /event
  * Generic event tracking, sent to both Google Analytics and Intercom. The
@@ -36,8 +41,6 @@ server.post('event', (req, res, next) => {
   const action = req.params.action;
   const user = req.params.user;
   const data = req.params.data;
-
-  logger.info('/POST event', category, action, user, data);
 
   if (!user || !user.id) {
     return next(new restify.InvalidArgumentError('Missing user.id parameter'));
@@ -67,6 +70,7 @@ server.post('event', (req, res, next) => {
  * @param {String} name - e.g., document.title string
  * @param {object} user - optional
  * @param {string} user.id - optional; used as cid in Google analytics
+ * @param {string} user.uuid - optional; an anonymous UUID
  */
 server.post('pageview', (req, res, next) => {
   const path = req.params.path;
@@ -80,8 +84,6 @@ server.post('pageview', (req, res, next) => {
   if (!name || typeof name !== 'string') {
     return next(new restify.InvalidArgumentError('Missing name parameter'));
   }
-
-  logger.info('/POST pageview', path, name, user);
 
   analytics
     .pageview(path, name, user)
@@ -111,8 +113,6 @@ server.post('user', (req, res, next) => {
   if (!user || !user.id) {
     return next(new restify.InvalidArgumentError('Missing user.id parameter'));
   }
-
-  logger.info('/POST user', user);
 
   analytics
     .updateUser(user)
