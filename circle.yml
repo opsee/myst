@@ -3,7 +3,9 @@ dependencies:
     - npm install -g eslint
     - npm install
     - docker info
-    - npm run docker-build
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io
+    - docker build -t quay.io/opsee/myst:$CIRCLE_SHA1 .
+    - docker tag -f quay.io/opsee/myst:$CIRCLE_SHA1 quay.io/opsee/myst:latest
 machine:
   services:
     - docker
@@ -18,5 +20,4 @@ deployment:
     branch: master
     owner: opsee
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io
-      - docker push quay.io/opsee/myst:$CIRCLE_SHA1
+      - docker push quay.io/opsee/myst:latest
