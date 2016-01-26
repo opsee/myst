@@ -11,7 +11,7 @@ machine:
     version: 5.4
 test:
   override:
-    - docker run -d -p 9098:80 quay.io/opsee/myst:latest; sleep 10;
+    - docker run -d -p 9098:80 quay.io/opsee/myst:$CIRCLE_SHA1; sleep 10;
     - npm run test
 deployment:
   hub:
@@ -19,4 +19,4 @@ deployment:
     owner: opsee
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io
-      - docker push quay.io/opsee/myst:latest
+      - docker push quay.io/opsee/myst:$CIRCLE_SHA1
