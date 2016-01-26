@@ -12,7 +12,10 @@ module.exports = {
   },
 
   pageview(path, name, user) {
-    return googleAnalytics.pageview(path, name, user);
+    return Promise.join(
+      googleAnalytics.pageview(path, name, user),
+      intercom.updateUser(user)
+    );
   },
 
   updateUser(user) {
