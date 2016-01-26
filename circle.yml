@@ -20,4 +20,5 @@ deployment:
     branch: master
     owner: opsee
     commands:
+      - docker push quay.io/opsee/myst:$CIRCLE_SHA1
       - docker push quay.io/opsee/myst:latest
