@@ -12,9 +12,14 @@ module.exports = {
   },
 
   pageview(path, name, user) {
+    // Pageviews are tracked as events in Intercom for authenticated users
+    // (to update the 'last seen') field. Pageviews for unatheticated users
+    // are only tracked in Google Analytics.
+    const isAuthenticated = !!user && !!user.id;
+
     return Promise.join(
       googleAnalytics.pageview(path, name, user),
-      intercom.updateUser(user)
+      isAuthenticated ? intercom.updateUser(user) : Promise.resolve()
     );
   },
 
