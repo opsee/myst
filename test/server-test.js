@@ -9,6 +9,7 @@ const sinon = require('sinon');
 const googleAnalytics = require('../lib/google-analytics');
 const intercom = require('../lib/intercom');
 const server = require('../server');
+const yeller = require('../utils/yeller');
 
 function noop() {
   return Promise.resolve();
@@ -25,6 +26,7 @@ describe('server', () => {
     sinon.stub(googleAnalytics, 'track', noop);
     sinon.stub(intercom, 'updateUser',  noop);
     sinon.stub(intercom, 'track', noop);
+    sinon.stub(yeller, 'report', noop);
 
     request = supertest(URL.format({
       protocol: config.server.protocol,

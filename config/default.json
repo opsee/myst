@@ -5,5 +5,9 @@
 
   "intercom": {
     "app_id": null
+  },
+
+  "yeller": {
+    "token": null
   }
 }
