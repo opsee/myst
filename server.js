@@ -47,6 +47,8 @@ server.use((req, res, next) => {
  * @param {String} user.id - (required) the opsee ID of the user's account.
  *    This is used to identify them in intercom.io.
  *
+ * @param {string} user.uuid - (optional)
+ *
  * @param {object} data - any additional JSON data to be tracked along with
  *    the event
  */
@@ -55,10 +57,6 @@ server.post('event', (req, res, next) => {
   const action = req.params.action;
   const user = req.params.user;
   const data = req.params.data;
-
-  if (!user || !user.id) {
-    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
-  }
 
   if (!category || typeof category !== 'string') {
     return next(new restify.InvalidArgumentError('Missing category parameter'));
