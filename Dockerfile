@@ -17,6 +17,7 @@ COPY . /usr/src/app
 
 ENV APPENV "mystenv"
 ENV INTERCOM_API_KEY ""
+ENV YELLER_TOKEN ""
 
 # Start the server
 EXPOSE 9098

@@ -38,6 +38,7 @@
     "intercom-client": "^2.6.0",
     "restify": "^4.0.3",
     "universal-analytics": "^0.3.10",
-    "winston": "^2.1.1"
+    "winston": "^2.1.1",
+    "yeller_node": "0.0.7"
   }
 }
