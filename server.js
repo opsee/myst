@@ -10,6 +10,18 @@ const server = restify.createServer({
 server.use(restify.CORS());
 server.use(restify.bodyParser({ mapParams: true }));
 
+/*
+ * GET /health
+ * Opsee/AWS health check endpoint
+ */
+server.get('/health', (req, res, next) => {
+  res.send(200);
+  next();
+});
+
+/*
+ * Logging middleware for all API requests
+ */
 server.use((req, res, next) => {
   logger.info(req.method, req.url, req.params);
   next();
@@ -125,15 +137,6 @@ server.post('user', (req, res, next) => {
       res.send(500);
       return next();
     });
-});
-
-/*
- * GET /health
- * Opsee/AWS health check endpoint
- */
-server.get('/health', (req, res, next) => {
-  res.send(200);
-  next();
 });
 
 module.exports = {
