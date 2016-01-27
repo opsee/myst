@@ -1,7 +1,9 @@
-const analytics = require('./analytics');
 const config = require('config');
-const logger = require('./utils/logger');
 const restify = require('restify');
+
+const analytics = require('./analytics');
+const logger = require('./utils/logger');
+const yeller = require('./utils/yeller');
 
 const server = restify.createServer({
   name: 'myst'
@@ -137,6 +139,26 @@ server.post('user', (req, res, next) => {
       res.send(500);
       return next();
     });
+});
+
+/**
+ * Catch-all exception handler for internal errors (i.e., 5xx-type things).
+ * Logs to Papertrail & Yeller.
+ */
+server.on('uncaughtException', (req, res, route, error) => {
+  const method = req.method;
+  const path = route.path;
+  const params = req.params;
+
+  logger.error(method, path, params, error);
+
+  yeller.report(error, {
+    customData: { path, method, params }
+  });
+
+  // Do not return 5xx errors to the client, silently fail instead.
+  // (Only 4xx errors are returned, so analytics can be fire-and-forget for clients.)
+  return res.send(200);
 });
 
 module.exports = {
