@@ -11,7 +11,7 @@ server.use(restify.CORS());
 server.use(restify.bodyParser({ mapParams: true }));
 
 server.use((req, res, next) => {
-  logger.debug(req.method, req.url, req.params);
+  logger.info(req.method, req.url, req.params);
   next();
 });
 
