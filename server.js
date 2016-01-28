@@ -53,6 +53,7 @@ server.use((req, res, next) => {
  *    the event
  */
 server.post('event', (req, res, next) => {
+  const origin = req.headers.origin;
   const category = req.params.category;
   const action = req.params.action;
   const user = req.params.user;
@@ -63,7 +64,7 @@ server.post('event', (req, res, next) => {
   }
 
   analytics
-    .event(category, action, user, data)
+    .event(origin, category, action, user, data)
     .then(() =>  {
       res.send(200);
       return next();
@@ -85,6 +86,7 @@ server.post('event', (req, res, next) => {
  * @param {string} user.uuid - optional; an anonymous UUID
  */
 server.post('pageview', (req, res, next) => {
+  const origin = req.headers.origin;
   const path = req.params.path;
   const name = req.params.name;
   const user = req.params.user;
@@ -98,7 +100,7 @@ server.post('pageview', (req, res, next) => {
   }
 
   analytics
-    .pageview(path, name, user)
+    .pageview(origin, path, name, user)
     .then(() => {
       res.send(200);
       return next();
@@ -120,6 +122,7 @@ server.post('pageview', (req, res, next) => {
  * @param {object} user.custom_attributes - optional
  */
 server.post('user', (req, res, next) => {
+  const origin = req.headers.origin;
   const user = req.params.user;
 
   if (!user || !user.id) {
@@ -127,7 +130,7 @@ server.post('user', (req, res, next) => {
   }
 
   analytics
-    .updateUser(user)
+    .updateUser(origin, user)
     .then(() => {
       res.send(200);
       return next();
