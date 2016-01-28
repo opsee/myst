@@ -48,6 +48,7 @@ describe('server', () => {
     it('returns 200', (done) => {
       request
         .post('/event')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           category: 'test',
           user: { id: 123 }
@@ -58,6 +59,7 @@ describe('server', () => {
     it('returns error if category missing', (done) => {
       request
         .post('/event')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           user: { id: 123 }
         })
@@ -73,6 +75,7 @@ describe('server', () => {
     it('returns 200', (done) => {
       request
         .post('/pageview')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           path: '/test',
           name: 'testing',
@@ -84,6 +87,7 @@ describe('server', () => {
     it('returns success if user missing', (done) => {
       request
         .post('/pageview')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           path: '/test',
           name: 'testing',
@@ -94,6 +98,7 @@ describe('server', () => {
     it('returns success if user.id missing', (done) => {
       request
         .post('/pageview')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           path: '/test',
           name: 'testing',
@@ -105,6 +110,7 @@ describe('server', () => {
     it('returns error if path missing', (done) => {
       request
         .post('/pageview')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           name: 'testing',
           user: { id: 123 }
@@ -119,6 +125,7 @@ describe('server', () => {
     it('returns error if name missing', (done) => {
       request
         .post('/pageview')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           path: '/test',
           user: { id: 123 }
@@ -135,6 +142,7 @@ describe('server', () => {
     it('returns 200', (done) => {
       request
         .post('/user')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           user: { id: 123 }
         })
@@ -144,6 +152,7 @@ describe('server', () => {
     it('returns error if user missing', (done) => {
       request
         .post('/user')
+        .set('Origin', 'http://test.opsee.com')
         .send({})
         .expect(409, {
           code: 'InvalidArgument',
@@ -155,6 +164,7 @@ describe('server', () => {
     it('returns error if user.id missing', (done) => {
       request
         .post('/user')
+        .set('Origin', 'http://test.opsee.com')
         .send({
           user: { email: 'foo@bar.com' }
         })
