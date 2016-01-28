@@ -83,45 +83,36 @@ server.post('event', (req, res, next) => {
 
 /**
  * POST /pageview
+ * Updates authenticated users' "last seen" time in Intercom
  *
- * @param {String} path - e.g., '/', '/search?q=foo'
- * @param {String} name - e.g., document.title string
- * @param {object} user - optional
- * @param {string} user.id - optional; used as cid in Google analytics
- * @param {string} user.uuid - optional; an anonymous UUID
+ * NOTE: Previously, Myst tracked page views in Google Analytics, in addition
+ * to Intercom. However, the Google Analytics snippet is able to provide
+ * far more information (referrer, location, etc.). Please use that instead
+ * of relying on Myst for pageviews in Google Analytics.
+ *
+ * TODO: investigate https://www.npmjs.com/package/universal-analytics#session-based-identification
+ *
+ * @param {object} user - required
+ * @param {string} user.id - required; used to update "last seen" in Intercom
  */
 server.post('pageview', (req, res, next) => {
-  const hostname = URL.parse(req.headers.origin).hostname;
-
-  const path = req.params.path;
-  const name = req.params.name;
   const user = req.params.user;
 
-  if (!path || typeof path !== 'string') {
-    return next(new restify.InvalidArgumentError('Missing path parameter'));
+  if (!user || !user.id) {
+    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
   }
 
-  if (!name || typeof name !== 'string') {
-    return next(new restify.InvalidArgumentError('Missing name parameter'));
-  }
-
-  // Pageviews are tracked as events in Intercom for authenticated users
-  // (to update the 'last seen') field. Pageviews for unatheticated users
-  // are only tracked in Google Analytics.
-  const isAuthenticated = !!user && !!user.id;
-
-  Promise.join(
-    googleAnalytics.pageview(hostname, path, name, user),
-    isAuthenticated ? intercom.updateUser(user) : Promise.resolve()
-  ).then(() => {
-    res.send(200);
-    return next();
-  })
-  .catch(err => {
-    logger.error(err);
-    res.send(500);
-    return next();
-  });
+  intercom
+    .updateUser(user)
+    .then(() => {
+      res.send(200);
+      return next();
+    })
+    .catch(err => {
+      logger.error(err);
+      res.send(500);
+      return next();
+    });
 });
 
 /**
