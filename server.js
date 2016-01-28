@@ -1,9 +1,11 @@
 const config = require('config');
 const restify = require('restify');
+const Promise = require('bluebird');
 
-const analytics = require('./analytics');
 const logger = require('./utils/logger');
 const yeller = require('./utils/yeller');
+const googleAnalytics = require('./lib/google-analytics');
+const intercom = require('./lib/intercom');
 
 const server = restify.createServer({
   name: 'myst'
@@ -53,7 +55,7 @@ server.use((req, res, next) => {
  *    the event
  */
 server.post('event', (req, res, next) => {
-  const origin = req.headers.origin;
+  const hostname = req.headers.origin;
   const category = req.params.category;
   const action = req.params.action;
   const user = req.params.user;
@@ -63,17 +65,18 @@ server.post('event', (req, res, next) => {
     return next(new restify.InvalidArgumentError('Missing category parameter'));
   }
 
-  analytics
-    .event(origin, category, action, user, data)
-    .then(() =>  {
-      res.send(200);
-      return next();
-    })
-    .catch(err => {
-      logger.error(err);
-      res.send(500);
-      return next();
-    });
+  Promise.join(
+    intercom.track(category, action, user, data),
+    googleAnalytics.track(hostname, category, action, user, data)
+  ).then(() =>  {
+    res.send(200);
+    return next();
+  })
+  .catch(err => {
+    logger.error(err);
+    res.send(500);
+    return next();
+  });
 });
 
 /**
@@ -86,7 +89,7 @@ server.post('event', (req, res, next) => {
  * @param {string} user.uuid - optional; an anonymous UUID
  */
 server.post('pageview', (req, res, next) => {
-  const origin = req.headers.origin;
+  const hostname = req.headers.origin;
   const path = req.params.path;
   const name = req.params.name;
   const user = req.params.user;
@@ -99,17 +102,23 @@ server.post('pageview', (req, res, next) => {
     return next(new restify.InvalidArgumentError('Missing name parameter'));
   }
 
-  analytics
-    .pageview(origin, path, name, user)
-    .then(() => {
-      res.send(200);
-      return next();
-    })
-    .catch(err => {
-      logger.error(err);
-      res.send(500);
-      return next();
-    });
+  // Pageviews are tracked as events in Intercom for authenticated users
+  // (to update the 'last seen') field. Pageviews for unatheticated users
+  // are only tracked in Google Analytics.
+  const isAuthenticated = !!user && !!user.id;
+
+  Promise.join(
+    googleAnalytics.pageview(hostname, path, name, user),
+    isAuthenticated ? intercom.updateUser(user) : Promise.resolve()
+  ).then(() => {
+    res.send(200);
+    return next();
+  })
+  .catch(err => {
+    logger.error(err);
+    res.send(500);
+    return next();
+  });
 });
 
 /**
@@ -122,15 +131,14 @@ server.post('pageview', (req, res, next) => {
  * @param {object} user.custom_attributes - optional
  */
 server.post('user', (req, res, next) => {
-  const origin = req.headers.origin;
   const user = req.params.user;
 
   if (!user || !user.id) {
     return next(new restify.InvalidArgumentError('Missing user.id parameter'));
   }
 
-  analytics
-    .updateUser(origin, user)
+  intercom
+    .updateUser(user)
     .then(() => {
       res.send(200);
       return next();
