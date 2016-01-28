@@ -1,6 +1,7 @@
 const config = require('config');
 const restify = require('restify');
 const Promise = require('bluebird');
+const URL = require('url');
 
 const logger = require('./utils/logger');
 const yeller = require('./utils/yeller');
@@ -55,7 +56,8 @@ server.use((req, res, next) => {
  *    the event
  */
 server.post('event', (req, res, next) => {
-  const hostname = req.headers.host;
+  const hostname = URL.parse(req.headers.origin).hostname;
+
   const category = req.params.category;
   const action = req.params.action;
   const user = req.params.user;
@@ -89,7 +91,8 @@ server.post('event', (req, res, next) => {
  * @param {string} user.uuid - optional; an anonymous UUID
  */
 server.post('pageview', (req, res, next) => {
-  const hostname = req.headers.host;
+  const hostname = URL.parse(req.headers.origin).hostname;
+
   const path = req.params.path;
   const name = req.params.name;
   const user = req.params.user;
