@@ -98,8 +98,12 @@ server.post('event', (req, res, next) => {
 server.post('pageview', (req, res, next) => {
   const user = req.params.user;
 
+  // TODO: add validation for user.id once clients (Emissary, McMahon) stop
+  // POSTing unauthenticated page views to Myst. For now, silently ignore
+  // logging unauthenticated users to Intercom.
   if (!user || !user.id) {
-    return next(new restify.InvalidArgumentError('Missing user.id parameter'));
+    res.send(200);
+    return next();
   }
 
   intercom
