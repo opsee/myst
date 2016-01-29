@@ -84,58 +84,40 @@ describe('server', () => {
         .expect(200, '', done);
     });
 
-    it('returns success if user missing', (done) => {
-      request
-        .post('/pageview')
-        .set('Origin', 'http://test.opsee.com')
-        .send({
-          path: '/test',
-          name: 'testing',
-        })
-        .expect(200, '', done);
-    });
+    // TODO: add validation for user.id once clients (Emissary, McMahon) stop
+    // POSTing unauthenticated page views to Myst. For now, silently ignore
+    // logging unauthenticated users to Intercom.
 
-    it('returns success if user.id missing', (done) => {
-      request
-        .post('/pageview')
-        .set('Origin', 'http://test.opsee.com')
-        .send({
-          path: '/test',
-          name: 'testing',
-          user: { email: 'foo@bar.com' }
-        })
-        .expect(200, '', done);
-    });
+    // it('returns error if user missing', (done) => {
+    //   request
+    //     .post('/pageview')
+    //     .set('Origin', 'http://test.opsee.com')
+    //     .send({
+    //       path: '/test',
+    //       name: 'testing',
+    //     })
+    //     .expect(409, {
+    //       code: 'InvalidArgument',
+    //       message: 'Missing user.id parameter'
+    //     })
+    //     .end(done);
+    // });
 
-    it('returns error if path missing', (done) => {
-      request
-        .post('/pageview')
-        .set('Origin', 'http://test.opsee.com')
-        .send({
-          name: 'testing',
-          user: { id: 123 }
-        })
-        .expect(409, {
-          code: 'InvalidArgument',
-          message: 'Missing path parameter'
-        })
-        .end(done);
-    });
-
-    it('returns error if name missing', (done) => {
-      request
-        .post('/pageview')
-        .set('Origin', 'http://test.opsee.com')
-        .send({
-          path: '/test',
-          user: { id: 123 }
-        })
-        .expect(409, {
-          code: 'InvalidArgument',
-          message: 'Missing name parameter'
-        })
-        .end(done);
-    });
+    // it('returns error if user.id missing', (done) => {
+    //   request
+    //     .post('/pageview')
+    //     .set('Origin', 'http://test.opsee.com')
+    //     .send({
+    //       path: '/test',
+    //       name: 'testing',
+    //       user: { email: 'foo@bar.com' }
+    //     })
+    //     .expect(409, {
+    //       code: 'InvalidArgument',
+    //       message: 'Missing user.id parameter'
+    //     })
+    //     .end(done);
+    // });
   });
 
   describe('POST /user', () => {
