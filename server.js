@@ -174,6 +174,7 @@ module.exports = {
   start() {
     server.listen(config.server.port, () => {
       logger.info(`${process.env.NODE_ENV} server ${server.name} listening at ${server.url}`);
+      logger.info('config', config);
     });
   }
 };
