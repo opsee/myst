@@ -1,11 +1,8 @@
 const config = require('config');
 const restify = require('restify');
-const Promise = require('bluebird');
-const URL = require('url');
 
 const logger = require('./utils/logger');
 const yeller = require('./utils/yeller');
-const googleAnalytics = require('./lib/google-analytics');
 const intercom = require('./lib/intercom');
 
 const server = restify.createServer({
@@ -56,8 +53,6 @@ server.use((req, res, next) => {
  *    the event
  */
 server.post('event', (req, res, next) => {
-  const hostname = URL.parse(req.headers.origin).hostname;
-
   const category = req.params.category;
   const action = req.params.action;
   const user = req.params.user;
@@ -67,18 +62,16 @@ server.post('event', (req, res, next) => {
     return next(new restify.InvalidArgumentError('Missing category parameter'));
   }
 
-  Promise.join(
-    intercom.track(category, action, user, data),
-    googleAnalytics.track(hostname, category, action, user, data)
-  ).then(() =>  {
-    res.send(200);
-    return next();
-  })
-  .catch(err => {
-    logger.error(err);
-    res.send(500);
-    return next();
-  });
+  return intercom.track(category, action, user, data)
+    .then(() =>  {
+      res.send(200);
+      return next();
+    })
+    .catch(err => {
+      logger.error(err);
+      res.send(500);
+      return next();
+    });
 });
 
 /**
