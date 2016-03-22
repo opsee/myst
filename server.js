@@ -90,6 +90,7 @@ server.post('event', (req, res, next) => {
  */
 server.post('pageview', (req, res, next) => {
   const user = req.params.user;
+  const path = req.params.path;
 
   // TODO: add validation for user.id once clients (Emissary, McMahon) stop
   // POSTing unauthenticated page views to Myst. For now, silently ignore
@@ -102,8 +103,14 @@ server.post('pageview', (req, res, next) => {
   intercom
     .updateUser(user)
     .then(() => {
-      res.send(200);
-      return next();
+      intercom
+        .track('pageview', path, user)
+        .then(() => {
+          res.send(200);
+        })
+        .catch(err => {
+          throw err;
+        });
     })
     .catch(err => {
       logger.error(err);
