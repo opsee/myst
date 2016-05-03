@@ -68,6 +68,7 @@ server.post('event', (req, res, next) => {
       return next();
     })
     .catch(err => {
+      yeller.report(err);
       logger.error(err);
       res.send(500);
       return next();
@@ -114,6 +115,7 @@ server.post('pageview', (req, res, next) => {
     })
     .catch(err => {
       logger.error(err);
+      yeller.report(err);
       res.send(500);
       return next();
     });
