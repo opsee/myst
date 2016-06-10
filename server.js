@@ -69,7 +69,6 @@ server.post('event', (req, res, next) => {
     });
 });
 
-
 /**
  * POST /user
  *
