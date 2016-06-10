@@ -66,58 +66,6 @@ server.post('event', (req, res, next) => {
     .then(() =>  {
       res.send(200);
       return next();
-    })
-    .catch(err => {
-      yeller.report(err);
-      logger.error(err);
-      res.send(500);
-      return next();
-    });
-});
-
-/**
- * POST /pageview
- * Updates authenticated users' "last seen" time in Intercom
- *
- * NOTE: Previously, Myst tracked page views in Google Analytics, in addition
- * to Intercom. However, the Google Analytics snippet is able to provide
- * far more information (referrer, location, etc.). Please use that instead
- * of relying on Myst for pageviews in Google Analytics.
- *
- * TODO: investigate https://www.npmjs.com/package/universal-analytics#session-based-identification
- *
- * @param {object} user - required
- * @param {string} user.id - required; used to update "last seen" in Intercom
- */
-server.post('pageview', (req, res, next) => {
-  const user = req.params.user;
-  const path = req.params.path;
-
-  // TODO: add validation for user.id once clients (Emissary, McMahon) stop
-  // POSTing unauthenticated page views to Myst. For now, silently ignore
-  // logging unauthenticated users to Intercom.
-  if (!user || !user.id) {
-    res.send(200);
-    return next();
-  }
-
-  intercom
-    .updateUser(user)
-    .then(() => {
-      intercom
-        .track('pageview', path, user)
-        .then(() => {
-          res.send(200);
-        })
-        .catch(err => {
-          throw err;
-        });
-    })
-    .catch(err => {
-      logger.error(err);
-      yeller.report(err);
-      res.send(500);
-      return next();
     });
 });
 

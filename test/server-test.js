@@ -71,19 +71,6 @@ describe('server', () => {
     });
   });
 
-  describe('POST /pageview', () => {
-    it('returns 200', (done) => {
-      request
-        .post('/pageview')
-        .set('Origin', 'http://test.opsee.com')
-        .send({
-          path: '/test',
-          name: 'testing',
-          user: { id: 123 }
-        })
-        .expect(200, '', done);
-    });
-
     // TODO: add validation for user.id once clients (Emissary, McMahon) stop
     // POSTing unauthenticated page views to Myst. For now, silently ignore
     // logging unauthenticated users to Intercom.
@@ -118,7 +105,6 @@ describe('server', () => {
     //     })
     //     .end(done);
     // });
-  });
 
   describe('POST /user', () => {
     it('returns 200', (done) => {
