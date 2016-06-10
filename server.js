@@ -66,12 +66,6 @@ server.post('event', (req, res, next) => {
     .then(() =>  {
       res.send(200);
       return next();
-    })
-    .catch(err => {
-      yeller.report(err);
-      logger.error(err);
-      res.send(500);
-      return next();
     });
 });
 
