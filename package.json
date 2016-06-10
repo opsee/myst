@@ -36,6 +36,7 @@
     "chai": "^3.4.1",
     "config": "^1.19.0",
     "intercom-client": "^2.6.0",
+    "lodash": "^4.13.1",
     "restify": "^4.0.3",
     "universal-analytics": "^0.3.10",
     "winston": "^2.1.1",
